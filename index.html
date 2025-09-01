@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HypeThumb - Create Viral AI Thumbnails in 2 Clicks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 0;
+            background: rgba(249, 250, 251, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(155, 81, 224, 0.1);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1A1A1A;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #9B51E0;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #9B51E0;
+            color: white;
+            box-shadow: 0 8px 25px rgba(155, 81, 224, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #8B46D1;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(155, 81, 224, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 12px;
+            max-width: 400px;
+            margin: 2rem auto 0;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-input:focus {
+            border-color: #9B51E0;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #9B51E0;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* How it Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #9B51E0, #FF6F61);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .step-number {
+            background: #A3FF12;
+            color: #1A1A1A;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        .step-icon {
+            position: relative;
+        }
+
+        /* Benefits */
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .comparison-table th {
+            background: #F9FAFB;
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+
+        .comparison-table .hypethumb {
+            background: linear-gradient(135deg, #9B51E0, #FF6F61);
+            color: white;
+        }
+
+        .check {
+            color: #10B981;
+            font-size: 1.2rem;
+        }
+
+        .cross {
+            color: #EF4444;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1A1A1A;
+            color: white;
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+
+        .footer h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-note {
+            color: #9CA3AF;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .footer-tagline {
+            color: #A3FF12;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 2rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6B7280;
+        }
+
+        .modal h3 {
+            margin-bottom: 1rem;
+            color: #1A1A1A;
+        }
+
+        .modal p {
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .comparison {
+                padding: 20px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 5px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <img src="assets/logos/Frame 1.png" alt="HypeThumb" class="logo">
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#how-it-works">How it Works</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#comparison">Comparison</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Create viral AI thumbnails in 2 clicks.</h1>
+                <p class="subtitle">Upload selfies, pick a style, get your thumbnail.</p>
+                <button class="btn btn-primary" onclick="openModal()">Generate Free</button>
+                
+                <form class="email-form" onsubmit="handleEmailSubmit(event)">
+                    <input type="email" class="email-input" placeholder="Enter your email for early access" required>
+                    <button type="submit" class="btn btn-primary">Join Waitlist</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <div class="section-header">
+                <p class="tagline">From selfies to thumbnails, fun, fast, and yours.</p>
+                <h2>How it Works</h2>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <div class="step-number">1</div>
+                        👤
+                    </div>
+                    <h3>Choose who is in it</h3>
+                    <p>Select faces and backgrounds from our AI-powered library or upload your own.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <div class="step-number">2</div>
+                        🎨
+                    </div>
+                    <h3>Add your creative direction</h3>
+                    <p>Pick a style, add text, and customize the vibe that matches your content.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <div class="step-number">3</div>
+                        📥
+                    </div>
+                    <h3>Download your thumbnail</h3>
+                    <p>Get your high-quality, click-worthy thumbnail ready for upload in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section id="benefits" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Thumbnails that boost clicks in seconds.</h2>
+                <p class="subtitle">Save time and money while creating bold, unique thumbnails no template could match.</p>
+            </div>
+            
+            <div class="benefits-list">
+                <div class="benefit">
+                    <div class="benefit-icon">🚀</div>
+                    <div>
+                        <h3>2x faster workflow</h3>
+                        <p>No design skills needed. Create professional thumbnails in seconds, not hours.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">🎨</div>
+                    <div>
+                        <h3>Creative and unique</h3>
+                        <p>Not another copy-paste template. Every thumbnail is uniquely generated for your content.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">💰</div>
+                    <div>
+                        <h3>Affordable pricing</h3>
+                        <p>Thumbnails that cost $20+ from a designer for just $1–2. Save money without sacrificing quality.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section id="comparison" class="section">
+        <div class="container">
+            <div class="section-header">
+                <p class="tagline">Not templates. Not delays. Just viral thumbnails with you in them.</p>
+                <h2>Why Choose HypeThumb?</h2>
+            </div>
+            
+            <div class="comparison">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Canva/Snappa</th>
+                            <th>Freelance Designer</th>
+                            <th class="hypethumb">HypeThumb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Repeated templates</strong></td>
+                            <td><span class="check">✅</span></td>
+                            <td><span class="cross">❌</span></td>
+                            <td><span class="cross">❌</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Your real face</strong></td>
+                            <td><span class="cross">❌</span></td>
+                            <td><span class="check">✅</span></td>
+                            <td><span class="check">✅</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multi persona</strong></td>
+                            <td><span class="cross">❌</span></td>
+                            <td><span class="check">✅</span></td>
+                            <td><span class="check">✅</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delivery time</strong></td>
+                            <td>Seconds</td>
+                            <td>1–2 days</td>
+                            <td><strong>Seconds</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost per thumbnail</strong></td>
+                            <td>$2–5</td>
+                            <td>$20–50</td>
+                            <td><strong>$1–2</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CTR optimized</strong></td>
+                            <td><span class="cross">❌</span></td>
+                            <td>Depends</td>
+                            <td><span class="check">✅</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h2>Get more clicks. Save more time.</h2>
+            <button class="btn btn-primary" onclick="openModal()">Start Free Today</button>
+            <p class="footer-note">
+                Free trial includes 2 thumbnails with AI stock personas and backgrounds.<br>
+                Upgrade to add your own face.
+            </p>
+            <p class="footer-tagline">Be the thumbnail. Be the click.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="earlyAccessModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3>Join Early Access</h3>
+            <p>Get 2 free thumbnails to start! Free trial works with AI stock personas and backgrounds. Upgrade to use your own face.</p>
+            <form class="email-form" onsubmit="handleModalSubmit(event)">
+                <input type="email" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Get Free Thumbnails</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('earlyAccessModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('earlyAccessModal').style.display = 'none';
+        }
+
+        function handleEmailSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert(`Thanks for joining our waitlist! We'll send early access details to ${email}`);
+            event.target.reset();
+        }
+
+        function handleModalSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert(`Welcome to HypeThumb! Check ${email} for your free thumbnail credits.`);
+            closeModal();
+            event.target.reset();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('earlyAccessModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
