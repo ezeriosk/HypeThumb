@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HypeThumb - Create Viral AI Thumbnails in 2 Clicks</title>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F5K4ZEE5PV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-F5K4ZEE5PV');
+    </script>
+    
+    <!-- PostHog -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);var n=t;if("undefined"!=typeof e)try{n=t[e]}catch(t){return}var p=n;if("function"==typeof p)return function(){p.apply(this,arguments)}}function l(t,e){e=e||{};var o=t;if("undefined"!=typeof e.persistence_name&&(o=e.persistence_name),"undefined"!=typeof e.persistence&&"cookie"!==e.persistence){if("localStorage"===e.persistence){try{window.localStorage.setItem("__mplssupport__","true"),window.localStorage.removeItem("__mplssupport__")}catch(t){return!1}return!0}return!1}return!0}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+ a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_Uc2OyCKZh2FeMWtLSbhyYIevlbPil9bkw8HdUoXR4qM',{api_host:'https://eu.i.posthog.com', autocapture: true, session_recording: { maskAllInputs: true }})
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -456,9 +472,9 @@
             <div class="hero-content">
                 <h1>Create viral AI thumbnails in 2 clicks.</h1>
                 <p class="subtitle">Upload selfies, pick a style, get your thumbnail.</p>
-                <button class="btn btn-primary btn-disabled" disabled>Generate Free - Soon!</button>
+                <button class="btn btn-primary btn-disabled" disabled data-cta="generate-free-hero">Generate Free - Soon!</button>
                 
-                <form class="email-form" id="waitlistForm">
+                <form class="email-form" id="waitlistForm" data-form="waitlist">
                     <input type="email" name="email" class="email-input" placeholder="Enter your email for early access" required>
                     <button type="submit" class="btn btn-primary">Join Waitlist</button>
                 </form>
@@ -606,7 +622,7 @@
     <footer class="footer">
         <div class="container">
             <h2>Get more clicks. Save more time.</h2>
-            <button class="btn btn-primary" onclick="openModal()">Join Waitlist</button>
+            <button class="btn btn-primary" onclick="openModal()" data-modal="join-early-access">Join Waitlist</button>
             <p class="footer-note">
                 Free trial includes 2 thumbnails with AI stock personas and backgrounds.<br>
                 Upgrade to add your own face.
@@ -623,7 +639,7 @@
                 <h3>Join the Waitlist</h3>
                 <p>Be the first to know when HypeThumb launches and get early access to create viral thumbnails with your face!</p>
             </div>
-            <form class="email-form" id="modalWaitlistForm">
+            <form class="email-form" id="modalWaitlistForm" data-form="waitlist">
                 <input type="email" name="email" class="email-input" placeholder="Enter your email" required>
                 <button type="submit" class="btn btn-primary">Join Waitlist</button>
             </form>
@@ -695,6 +711,7 @@
             const success = await submitToFormspree(email, 'hero');
             
             if (success) {
+                trackWaitlistSubmit(email);
                 showSuccessMessage(this, 'Successfully added to waitlist! We\'ll notify you when HypeThumb launches.');
                 this.reset();
             } else {
@@ -719,6 +736,7 @@
             const success = await submitToFormspree(email, 'modal');
             
             if (success) {
+                trackWaitlistSubmit(email);
                 showSuccessMessage(this, 'Successfully added to waitlist! We\'ll notify you when HypeThumb launches.');
                 this.reset();
                 setTimeout(() => {
@@ -739,6 +757,68 @@
             if (event.target === modal) {
                 closeModal();
             }
+        }
+        
+        // Analytics and tracking setup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track scroll depth
+            let scrollTracked = false;
+            window.addEventListener('scroll', function() {
+                if (!scrollTracked) {
+                    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                    if (scrollPercent >= 75) {
+                        scrollTracked = true;
+                        // GA4 tracking
+                        gtag('event', 'scroll_75');
+                        // PostHog tracking
+                        posthog.capture('scroll_75', {
+                            path: window.location.href
+                        });
+                    }
+                }
+            });
+            
+            // Track CTA button clicks
+            document.querySelectorAll('[data-cta="generate-free-hero"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    // GA4 tracking
+                    gtag('event', 'generate_free_click');
+                    // PostHog tracking
+                    posthog.capture('generate_free_click', {
+                        placement: 'hero'
+                    });
+                });
+            });
+            
+            // Track modal opens
+            document.querySelectorAll('[data-modal="join-early-access"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    // GA4 tracking
+                    gtag('event', 'modal_join_open');
+                    // PostHog tracking
+                    posthog.capture('modal_join_open', {
+                        source: 'cta_generate_free'
+                    });
+                });
+            });
+        });
+        
+        // Enhanced form submission functions with tracking
+        function trackWaitlistSubmit(email) {
+            const emailDomain = email.split('@')[1];
+            
+            // GA4 tracking
+            gtag('event', 'waitlist_submit', {
+                email_domain: emailDomain
+            });
+            
+            // PostHog tracking
+            posthog.capture('waitlist_submit', {
+                email_domain: emailDomain
+            });
+            
+            // Identify user in PostHog
+            posthog.identify(email);
         }
 
         // Smooth scrolling for navigation links
