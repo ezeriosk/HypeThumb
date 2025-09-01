@@ -422,8 +422,10 @@
                 <p class="subtitle">Upload selfies, pick a style, get your thumbnail.</p>
                 <button class="btn btn-primary" onclick="openModal()">Generate Free</button>
                 
-                <form class="email-form" onsubmit="handleEmailSubmit(event)">
-                    <input type="email" class="email-input" placeholder="Enter your email for early access" required>
+                <form class="email-form" action="https://formspree.io/f/myzdpaoe" method="POST">
+                    <input type="email" name="email" class="email-input" placeholder="Enter your email for early access" required>
+                    <input type="hidden" name="_subject" value="New HypeThumb Waitlist Signup">
+                    <input type="hidden" name="_next" value="#">
                     <button type="submit" class="btn btn-primary">Join Waitlist</button>
                 </form>
             </div>
@@ -585,8 +587,11 @@
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <h3>Join Early Access</h3>
             <p>Get 2 free thumbnails to start! Free trial works with AI stock personas and backgrounds. Upgrade to use your own face.</p>
-            <form class="email-form" onsubmit="handleModalSubmit(event)">
-                <input type="email" class="email-input" placeholder="Enter your email" required>
+            <form class="email-form" action="https://formspree.io/f/myzdpaoe" method="POST">
+                <input type="email" name="email" class="email-input" placeholder="Enter your email" required>
+                <input type="hidden" name="_subject" value="New HypeThumb Early Access Signup">
+                <input type="hidden" name="source" value="modal">
+                <input type="hidden" name="_next" value="#">
                 <button type="submit" class="btn btn-primary">Get Free Thumbnails</button>
             </form>
         </div>
