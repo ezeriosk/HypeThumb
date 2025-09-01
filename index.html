@@ -121,6 +121,18 @@
             box-shadow: 0 12px 35px rgba(155, 81, 224, 0.4);
         }
 
+        .btn-disabled {
+            background: #9CA3AF !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
+
+        .btn-disabled:hover {
+            background: #9CA3AF !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
         /* Hero Section */
         .hero {
             padding: 120px 0 80px;
@@ -340,6 +352,30 @@
             position: relative;
         }
 
+        .modal-header {
+            margin-bottom: 30px;
+        }
+
+        .modal-header h3 {
+            margin-bottom: 15px;
+            color: #1A1A1A;
+        }
+
+        .modal-header p {
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #10B981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-weight: 600;
+            display: none;
+        }
+
         .modal-close {
             position: absolute;
             top: 15px;
@@ -420,12 +456,10 @@
             <div class="hero-content">
                 <h1>Create viral AI thumbnails in 2 clicks.</h1>
                 <p class="subtitle">Upload selfies, pick a style, get your thumbnail.</p>
-                <button class="btn btn-primary" onclick="openModal()">Generate Free</button>
+                <button class="btn btn-primary btn-disabled" disabled>Soon!</button>
                 
-                <form class="email-form" action="https://formspree.io/f/myzdpaoe" method="POST">
+                <form class="email-form" id="waitlistForm">
                     <input type="email" name="email" class="email-input" placeholder="Enter your email for early access" required>
-                    <input type="hidden" name="_subject" value="New HypeThumb Waitlist Signup">
-                    <input type="hidden" name="_next" value="#">
                     <button type="submit" class="btn btn-primary">Join Waitlist</button>
                 </form>
             </div>
@@ -572,7 +606,7 @@
     <footer class="footer">
         <div class="container">
             <h2>Get more clicks. Save more time.</h2>
-            <button class="btn btn-primary" onclick="openModal()">Start Free Today</button>
+            <button class="btn btn-primary" onclick="openModal()">Join Waitlist</button>
             <p class="footer-note">
                 Free trial includes 2 thumbnails with AI stock personas and backgrounds.<br>
                 Upgrade to add your own face.
@@ -582,48 +616,126 @@
     </footer>
 
     <!-- Modal -->
-    <div id="earlyAccessModal" class="modal">
+    <div id="waitlistModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h3>Join Early Access</h3>
-            <p>Get 2 free thumbnails to start! Free trial works with AI stock personas and backgrounds. Upgrade to use your own face.</p>
-            <form class="email-form" action="https://formspree.io/f/myzdpaoe" method="POST">
+            <div class="modal-header">
+                <h3>Join the Waitlist</h3>
+                <p>Be the first to know when HypeThumb launches and get early access to create viral thumbnails with your face!</p>
+            </div>
+            <form class="email-form" id="modalWaitlistForm">
                 <input type="email" name="email" class="email-input" placeholder="Enter your email" required>
-                <input type="hidden" name="_subject" value="New HypeThumb Early Access Signup">
-                <input type="hidden" name="source" value="modal">
-                <input type="hidden" name="_next" value="#">
-                <button type="submit" class="btn btn-primary">Get Free Thumbnails</button>
+                <button type="submit" class="btn btn-primary">Join Waitlist</button>
             </form>
         </div>
     </div>
 
     <script>
         function openModal() {
-            document.getElementById('earlyAccessModal').style.display = 'flex';
+            document.getElementById('waitlistModal').style.display = 'flex';
         }
 
         function closeModal() {
-            document.getElementById('earlyAccessModal').style.display = 'none';
+            document.getElementById('waitlistModal').style.display = 'none';
         }
 
-        function handleEmailSubmit(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
-            alert(`Thanks for joining our waitlist! We'll send early access details to ${email}`);
-            event.target.reset();
+        function showSuccessMessage(form, message) {
+            // Remove existing success message if any
+            const existingMessage = form.querySelector('.success-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Create and show success message
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            
+            // Insert after the form
+            form.parentNode.insertBefore(successDiv, form.nextSibling);
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 5000);
         }
 
-        function handleModalSubmit(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
-            alert(`Welcome to HypeThumb! Check ${email} for your free thumbnail credits.`);
-            closeModal();
-            event.target.reset();
+        async function submitToFormspree(email, source = 'hero') {
+            try {
+                const response = await fetch('https://formspree.io/f/myzdpaoe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        _subject: `New HypeThumb Waitlist Signup - ${source}`,
+                        source: source
+                    })
+                });
+                
+                return response.ok;
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                return false;
+            }
         }
+
+        // Handle hero form submission
+        document.getElementById('waitlistForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const button = this.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.textContent = 'Joining...';
+            
+            const success = await submitToFormspree(email, 'hero');
+            
+            if (success) {
+                showSuccessMessage(this, 'Successfully added to waitlist! We\'ll notify you when HypeThumb launches.');
+                this.reset();
+            } else {
+                showSuccessMessage(this, 'Something went wrong. Please try again.');
+            }
+            
+            // Re-enable button
+            button.disabled = false;
+            button.textContent = 'Join Waitlist';
+        });
+
+        // Handle modal form submission
+        document.getElementById('modalWaitlistForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const button = this.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.textContent = 'Joining...';
+            
+            const success = await submitToFormspree(email, 'modal');
+            
+            if (success) {
+                showSuccessMessage(this, 'Successfully added to waitlist! We\'ll notify you when HypeThumb launches.');
+                this.reset();
+                setTimeout(() => {
+                    closeModal();
+                }, 2000);
+            } else {
+                showSuccessMessage(this, 'Something went wrong. Please try again.');
+            }
+            
+            // Re-enable button
+            button.disabled = false;
+            button.textContent = 'Join Waitlist';
+        });
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('earlyAccessModal');
+            const modal = document.getElementById('waitlistModal');
             if (event.target === modal) {
                 closeModal();
             }
