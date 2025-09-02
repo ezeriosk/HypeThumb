@@ -413,6 +413,85 @@
             margin-bottom: 2rem;
         }
 
+        /* Pricing */
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-card h3 {
+            margin-bottom: 20px;
+            color: #1A1A1A;
+        }
+
+        .pricing-card .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #9B51E0;
+            margin-bottom: 20px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            color: #6B7280;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .pricing-features li:before {
+            content: "•";
+            color: #9B51E0;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #9B51E0;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured:before {
+            content: "Most Popular";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #9B51E0;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             h1 {
@@ -448,6 +527,15 @@
                 padding: 10px 5px;
                 font-size: 0.9rem;
             }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
         }
     </style>
 </head>
@@ -461,6 +549,7 @@
                     <li><a href="#how-it-works">How it Works</a></li>
                     <li><a href="#benefits">Benefits</a></li>
                     <li><a href="#comparison">Comparison</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
                 </ul>
             </nav>
         </div>
@@ -612,8 +701,70 @@
                             <td>Depends</td>
                             <td><span class="check">✅</span></td>
                         </tr>
+                        <tr>
+                            <td><strong>Brand logo overlay</strong></td>
+                            <td>Limited</td>
+                            <td><span class="check">✅</span></td>
+                            <td><span class="check">✅ (Pro or add-on)</span></td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple pricing that scales with you.</h2>
+                <p class="subtitle">Start free, then pick a pack or a plan when you're ready.</p>
+            </div>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Free Trial</h3>
+                    <div class="price">Free</div>
+                    <ul class="pricing-features">
+                        <li>2 thumbnails free when you sign up</li>
+                        <li>Use AI stock personas and backgrounds</li>
+                        <li>Your own face available on paid</li>
+                    </ul>
+                    <button class="btn btn-primary btn-disabled" disabled>Start Free</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Single Thumbnail</h3>
+                    <div class="price">From €2.5 per image</div>
+                    <ul class="pricing-features">
+                        <li>3 AI variants per request</li>
+                        <li>Style presets + custom prompt</li>
+                        <li>Add-ons: +€0.5 brand logo (PNG), +€0.5 custom background</li>
+                    </ul>
+                    <button class="btn btn-primary btn-disabled" disabled>Buy Single</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Packs</h3>
+                    <div class="price">Best Value</div>
+                    <ul class="pricing-features">
+                        <li>10 for €12 (from €1.2/image)</li>
+                        <li>50 for €50 (from €1/image)</li>
+                        <li>200 for €160 (from €0.8/image)</li>
+                        <li>Includes: 1 saved creator, text overlay modes, full history</li>
+                    </ul>
+                    <button class="btn btn-primary btn-disabled" disabled>Get a Pack</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Subscriptions</h3>
+                    <div class="price">€20-50/mo</div>
+                    <ul class="pricing-features">
+                        <li><strong>Starter</strong> — €20/mo, 50 credits<br>1 saved creator, full text modes<br>Brand logo overlay available as add-on (+€0.5/image)</li>
+                        <li><strong>Pro</strong> — €50/mo, 200 credits<br>Up to 2 saved creators, backgrounds library, multi-persona<br>Brand logo overlay included</li>
+                    </ul>
+                    <button class="btn btn-primary btn-disabled" disabled>Go Pro</button>
+                </div>
             </div>
         </div>
     </section>
